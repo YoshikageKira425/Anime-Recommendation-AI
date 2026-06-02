@@ -1,17 +1,31 @@
-import textwrap
+def format_anime_for_prompt(results: dict) -> str:
+    anime_lines = []
+    metadatas = results.get("metadatas", [[]])[0]
+    documents = results.get("documents", [[]])[0]
 
-def generate_prompt(genre: str, mood: str, history: list, anime_list: list) -> str:
+    for meta, doc in zip(metadatas, documents):
+        line = f"- {meta['title']} | Genres: {meta['genres']} | Score: {meta['score']} | {doc[:150]}"
+        anime_lines.append(line)
+
+    return "\n".join(anime_lines)
+
+def generate_prompt(genres: str, anime_results: dict, history: list = []) -> str:
+    anime_text = format_anime_for_prompt(anime_results)
+    history_text = ", ".join(history) if history else "Nothing yet"
+
     prompt = f"""
-    Act as an expert anime recommender. Please provide 5 anime recommendations based on the following criteria:
+    You are an expert anime recommender. Recommend 5 anime based on the criteria below.
 
-    - Target Genre: {genre}
-    - My Current Mood: {mood}
-    - Anime I have already seen: {str(history)}
-    - Available anime to choose from: {str(anime_list)}
+    - Genre: {genres}
+    - Already watched: {history_text}
+    - Anime to choose from:
+    {anime_text}
 
-    For each recommendation, you must include:
-    1. The Title
-    2. Why this anime: A brief explanation of why you chose this specific anime, connecting it directly to my current mood, the requested genre, and how it aligns with my watch history.
+    For each recommendation, format it exactly like this:
+    1. Title:
+       Why: (one sentence connecting it to the mood and genre)
+
+    Only recommend from the list provided. Do not make up anime.
     """
-    
-    return textwrap.dedent(prompt).strip()
+
+    return prompt

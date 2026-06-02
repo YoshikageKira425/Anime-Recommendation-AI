@@ -12,7 +12,7 @@ client = OpenAI(
     api_key=token,
 )
 
-def get_recommendation(prompt: str) -> str:
+def send_to_ai(prompt: str) -> str:
     try:
         response = client.chat.completions.create(
             messages=[
@@ -22,7 +22,6 @@ def get_recommendation(prompt: str) -> str:
                 },
             ],
             temperature=1.0,
-            top_p=1.0,
             model=model
         )
 
