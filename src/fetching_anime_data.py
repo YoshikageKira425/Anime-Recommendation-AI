@@ -22,8 +22,12 @@ def fetch_data():
         }
     """
 
-    response = requests.post("https://graphql.anilist.co", json={"query": query})
-    return response.json()["data"]["Page"]["media"]
+    try:
+        response = requests.post("https://graphql.anilist.co", json={"query": query})
+        return response.json()["data"]["Page"]["media"]
+    except Exception as e:
+        print(f"Error fetching from anilist: {e}")
+        return []
 
 def save_data(anime_list):
     chroma_client = chromadb.PersistentClient("./data")
