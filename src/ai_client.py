@@ -27,5 +27,4 @@ def send_to_ai(prompt: str) -> str:
 
         return response.choices[0].message.content
     except Exception as e:
-        print(f"Error getting recommendation: {e}")
         return "Sorry, I couldn't get a recommendation right now."
