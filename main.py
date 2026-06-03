@@ -1,5 +1,6 @@
 import os
 from src.recommender import get_recommendations
+from src.history import history
 from rich.console import Console
 
 console = Console()
@@ -8,18 +9,16 @@ def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 def main():
-    console.rule("Hello from anime-recommendation-ai", style="bold red")
-    
+    clear()
     while True:
+        console.rule("Hello from anime-recommendation-ai", style="bold red")
         print("Commands: recommendation | history | exit")
         command = input("> ").strip().lower()
         
         if command == "recommendation":
-            clear()
             asking_for_recommendation()
         elif command == "history":
-            clear()
-            pass
+            history()
         elif command == "exit":
             clear()
             break
@@ -29,6 +28,7 @@ def main():
     console.print("Thanks for trying it!!!!!", style="bold")
 
 def asking_for_recommendation():
+    clear()
     genres = input("What genres do you like? ")
     min_score = _get_score()
     
