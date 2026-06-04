@@ -4,7 +4,7 @@ import requests
 def fetch_data():
     query = """
         query {
-            Page(page: 1, perPage: 50) {
+            Page(page: 5, perPage: 100) {
                 media(type: ANIME, sort: SCORE_DESC) {
                     id
                     title {
@@ -49,5 +49,7 @@ def save_data(anime_list):
                 "year": anime["seasonYear"] or 0,
             }]
         )
+        
+    print(f"Added {len(anime_list)} records.")
     
 save_data(fetch_data())
